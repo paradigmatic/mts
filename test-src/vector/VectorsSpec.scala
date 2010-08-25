@@ -41,15 +41,17 @@ class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
   it can "be added to several vectors" in {
     val v1 = mtjVector
     val v2 = mtjVector
-    val v3:JVector = new JDenseVector( Array( 0.0, 1.0, 0.0, -1.0) )
-    val v4 = (v1 + v2 + v3).mtjVector
+    val v3 = (v1+v2)
+    val v4 = new JDenseVector( Array( 0.0, 1.0, 0.0, -1.0) )
+    val v5 = (v3 + v4)
     v1 should be ( similarTo( 0.0, 1.0, 2.0, 3.0 ) )
     v2 should be ( similarTo( 0.0, 1.0, 2.0, 3.0 ) )
-    v3 should be ( similarTo( 0.0, 1.0, 0.0, -1.0 ) )
-    v4 should be ( similarTo( 0.0, 3.0, 4.0, 5.0 ) )
+    v3.mtjVector should be ( similarTo( 0.0, 2.0, 4.0, 6.0 ) )
+    v4 should be ( similarTo( 0.0, 1.0, 0.0, -1.0 ) )
+    v5.mtjVector should be ( similarTo( 0.0, 3.0, 4.0, 5.0 ) )
   }
 
-  it can "let easy access to positions" in {
+  it can "let user to easily access positions" in {
     val v1 = mtjVector( 0, 1, 2 )
     val v2 = mtjVector( 1, 0, -1)
     val w =  (v1+v2)
@@ -61,6 +63,15 @@ class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
     v1(2) should be (2)
   }
 
+  it can "let user to easily change value" in {
+    val v1 = mtjVector( 0, 1, 2 )
+    val v2 = mtjVector( 1, 0, -1)
+    val w1 = (v1+v2)
+    w1(0) = 12
+    w1(0) should be (12)
+    val w2 = w1 + v2
+    w2(0) should be (13)
+  }
 }
 
 
