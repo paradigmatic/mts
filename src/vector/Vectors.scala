@@ -7,6 +7,7 @@ trait Vector {
 
   def +[W <% Vector]( v: W ): Vector
   def mtjVector(): JVector
+  def apply( index: Int ) = mtjVector.get( index )
 
 }
 

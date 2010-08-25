@@ -17,6 +17,10 @@ class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
   def mtjVector():JVector = 
     new JDenseVector( Array( 0.0, 1.0, 2.0, 3.0) )
 
+  def mtjVector( values: Double*) = {
+    new JDenseVector( values.toArray )
+  }
+
   
   "An mtj vector" can "be wrapped and unwrapped" in {
     val jvec = mtjVector
@@ -43,6 +47,18 @@ class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
     v2 should be ( similarTo( 0.0, 1.0, 2.0, 3.0 ) )
     v3 should be ( similarTo( 0.0, 1.0, 0.0, -1.0 ) )
     v4 should be ( similarTo( 0.0, 3.0, 4.0, 5.0 ) )
+  }
+
+  it can "let easy access to positions" in {
+    val v1 = mtjVector( 0, 1, 2 )
+    val v2 = mtjVector( 1, 0, -1)
+    val w =  (v1+v2)
+    w(0) should be (1)
+    w(1) should be (1)
+    w(2) should be (1)
+    v1(0) should be (0)
+    v1(1) should be (1)
+    v1(2) should be (2)
   }
 
 }
