@@ -10,15 +10,29 @@ trait Vector {
 
 }
 
+class VectorWrapper( val mtjVector: JVector ) extends Vector {
+
+  def +[W <% Vector]( v: W ) = 
+    new VectorAdder( List( this, v ) )
+
+}
+
+class VectorAdder( val vectors: List[Vector] )  extends Vector {
+
+  lazy val mtjVector = {
+    val v = vectors.head.mtjVector.copy
+    for( w <- vectors.tail ) { v add w.mtjVector }
+    v
+  }
+
+  def +[W <% Vector]( v: W ) = 
+    new VectorAdder( v :: vectors )
+
+} 
+
 object Vector {
 
   implicit def mts2mtj( v: Vector ) = v.mtjVector
   implicit def mtj2mts( v: JVector ) = new VectorWrapper( v )
-
-}
-
-class VectorWrapper( val mtjVector: JVector ) extends Vector {
-
-  def +[W <% Vector]( v: W ) = new VectorWrapper( mtjVector add v.mtjVector )
 
 }

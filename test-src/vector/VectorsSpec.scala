@@ -9,34 +9,8 @@ import no.uib.cipr.matrix.{ Vector => JVector }
 import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
 
 import ch.unige.mts.vector.Vector._
+import ch.unige.mts.test._
 
-trait VectorMatchers {
-
-  class JVecMatcher( values: Seq[Double] ) extends BeMatcher[JVector]{
-    override def apply( left:JVector ) = {
-      if( values.size != left.size ) {
-        MatchResult( false, 
-                    "The sizes are different", 
-                    "The sizes are equal",
-                    "the sizes are different",                              
-                    "The sizes are equal")
-      } else {
-        var eqValues = true
-        for( i <- 0 until values.size ) {
-          eqValues &= left.get(i) == values(i)
-        }
-        MatchResult( eqValues,
-                    "The values are different",
-                    "The values are equal",
-                    "the values are different",
-                    "the values are equal" )
-      }
-    }
-  }
-
-  def similarTo( values:Double* ) = new JVecMatcher(values)
-
-}
 
 class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
 
@@ -52,19 +26,23 @@ class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
   }
 
   it can "be added to another mtj vector" in {
-    val v = mtjVector
-    val w = mtjVector
-    v + w
-    v should be (similarTo( 0.0, 2.0, 4.0, 6.0 ))
+    val v1 = mtjVector
+    val v2 = mtjVector
+    val v3 = (v1 + v2).mtjVector
+    v1 should be ( similarTo( 0.0, 1.0, 2.0, 3.0 ) )
+    v2 should be ( similarTo( 0.0, 1.0, 2.0, 3.0 ) )
+    v3 should be ( similarTo( 0.0, 2.0, 4.0, 6.0 ) )
   }
   
   it can "be added to several vectors" in {
     val v1 = mtjVector
     val v2 = mtjVector
-    val v3 = new JDenseVector( Array( 0.0, 1.0, 0.0, -1.0) )
-    v1 + v2 + v3
-    v1 should be (similarTo( 0.0, 3.0, 4.0, 5.0 ) )
-
+    val v3:JVector = new JDenseVector( Array( 0.0, 1.0, 0.0, -1.0) )
+    val v4 = (v1 + v2 + v3).mtjVector
+    v1 should be ( similarTo( 0.0, 1.0, 2.0, 3.0 ) )
+    v2 should be ( similarTo( 0.0, 1.0, 2.0, 3.0 ) )
+    v3 should be ( similarTo( 0.0, 1.0, 0.0, -1.0 ) )
+    v4 should be ( similarTo( 0.0, 3.0, 4.0, 5.0 ) )
   }
 
 }
