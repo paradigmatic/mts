@@ -45,8 +45,16 @@ class VectorProxy( private var delegate: Vector ) extends ModifiableVector {
 
 }
 
-class VectorAdder( val vectors: List[Vector] )  extends Vector {
- 
+class VectorAdder( vec: List[Vector] )  extends Vector {
+
+  val vectors:List[Vector] = {
+    val lstVec = vec map ( (v:Vector) => v match   {
+      case adder: VectorAdder => adder.vectors
+      case _ => List( v )
+    })
+    lstVec.flatten
+  }
+
   def mtjVector = {
     val v = vectors.head.mtjVector.copy
     for( w <- vectors.tail ) { 
@@ -58,10 +66,7 @@ class VectorAdder( val vectors: List[Vector] )  extends Vector {
     v
   }
 
-  def +[W <% Vector]( v: W ) = v match {
-    case w: VectorAdder => new VectorAdder( vectors ::: w.vectors )
-    case _ => new VectorAdder( v :: vectors )
-  }
+  def +[W <% Vector]( v: W ) =  new VectorAdder( v :: vectors )
 
   def *( alpha: Double ) = new VectorProxy( new ScaledVector( alpha, mtjVector ) ) 
 
@@ -80,7 +85,6 @@ class ScaledVector( private var beta: Double, val v: Vector ) extends Vector {
   }
 
   def constant = beta
-
 
 }
 

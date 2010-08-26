@@ -81,6 +81,7 @@ class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
     v1 should be (similarTo(1,0,0))
     v2 should be (similarTo(0,1,0))
     v3 should be (similarTo(0,0,1))
+    v4 should be (similarTo(2,3,4))
   }
 
   it should "allow a scalar to come before a vector when multiplying" in {
@@ -91,17 +92,31 @@ class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
     v1 should be (similarTo(1,0,0))
     v2 should be (similarTo(0,1,0))
     v3 should be (similarTo(0,0,1))
+    v4 should be (similarTo(2,3,4))
   }
 
   it should "respect associativity" in {
     val v1 = mtjVector( 1, 0, 0)
     val v2 = mtjVector( 0, 1, 0)
     val v3 = mtjVector( 0, 0, 1)
-    val v4: JVector = ( 2*v1 + 3*v2 ) + 2*v3
+    val v4: JVector = 2*v1 + ( 3*v2  + 4*v3 )
     v1 should be (similarTo(1,0,0))
     v2 should be (similarTo(0,1,0))
     v3 should be (similarTo(0,0,1))
+    v4 should be (similarTo(2,3,4))
   }
+
+  it should "respect distribution of scalar mult over addition" in {
+    val v1 = mtjVector( 1, 0, 0)
+    val v2 = mtjVector( 0, 1, 0)
+    val v3: JVector = 2*v1 + 2*v2
+    val v4: JVector = 2*(v1+v2)
+    v1 should be (similarTo(1,0,0))
+    v2 should be (similarTo(0,1,0))
+    v3 should be (similarTo(2,2,0))
+    v4 should be (similarTo(2,2,0))
+  }
+
 }
 
 
