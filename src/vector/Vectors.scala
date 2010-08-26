@@ -88,5 +88,12 @@ object Vector {
 
   implicit def mts2mtj( v: Vector ):JVector = v.mtjVector
   implicit def mtj2mts( v: JVector ):VectorWrapper = new VectorWrapper( v )
+  implicit def double2scalar( d: Double): Scalar = new Scalar(d)
+  implicit def int2scalar( i: Int): Scalar = new Scalar(i)
+
+  class Scalar( d: Double ) {
+    def *(v: Vector ) = v*d
+    def *(v: JVector ) = v*d
+  }
 
 }
