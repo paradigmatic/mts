@@ -49,28 +49,37 @@ class VectorAdder( val vectors: List[Vector] )  extends Vector {
  
   def mtjVector = {
     val v = vectors.head.mtjVector.copy
-    for( w <- vectors.tail ) { v add w.mtjVector }
+    for( w <- vectors.tail ) { 
+      w match {
+        case scaled: ScaledVector => v.add( scaled.constant, scaled.v)
+        case _ => v add w.mtjVector
+      }
+    }
     v
   }
 
-  def +[W <% Vector]( v: W ) = 
-    new VectorAdder( v :: vectors )
+  def +[W <% Vector]( v: W ) = v match {
+    case w: VectorAdder => new VectorAdder( vectors ::: w.vectors )
+    case _ => new VectorAdder( v :: vectors )
+  }
 
   def *( alpha: Double ) = new VectorProxy( new ScaledVector( alpha, mtjVector ) ) 
 
 } 
 
-class ScaledVector( private var beta: Double, v: Vector ) extends Vector {
+class ScaledVector( private var beta: Double, val v: Vector ) extends Vector {
   
   def mtjVector() = v.mtjVector.copy scale beta
 
   //TODO: Remove copy
-  def +[W <% Vector]( v: W ) = mtjVector.add( beta, v.mtjVector)
+  def +[W <% Vector]( v: W ) = new VectorAdder( List( this, v ) )
     
   def *( alpha: Double ) = {
     beta *= alpha
     this
   }
+
+  def constant = beta
 
 
 }

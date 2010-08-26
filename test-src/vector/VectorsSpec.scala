@@ -72,6 +72,16 @@ class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
     val w2 = w1 + v2
     w2(0) should be (13)
   }
+
+  it should "support scalar/vector multiplication" in {
+    val v1 = mtjVector( 1, 0, 0)
+    val v2 = mtjVector( 0, 1, 0)
+    val v3 = mtjVector( 0, 0, 1)
+    val v4: JVector = v1*2 + v2*3 + v3*4
+    v1 should be (similarTo(1,0,0))
+    v2 should be (similarTo(0,1,0))
+    v3 should be (similarTo(0,0,1))
+  }
 }
 
 
