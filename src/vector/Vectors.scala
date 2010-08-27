@@ -2,6 +2,7 @@ package ch.unige.mts.vector
 
 import no.uib.cipr.matrix.{ Vector => JVector }
 import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
+import no.uib.cipr.matrix.sparse.{ SparseVector => JSparseVector }
 
 import Vector._
 
@@ -104,14 +105,22 @@ object Vector {
 
    def apply( seq: Seq[Double] ):JDenseVector = {
     val length = seq.size
-    println(seq)
-    println(length)
     val vec = new JDenseVector( length )
-    println(vec.size)
     for( i <- 0 until length ) {
       vec.set( i, seq(i) )
     }
     vec
   }
+
+  //TODO: check what is the return type of a collective operation
+   def apply( map: Map[Int,Double] ):JSparseVector = {
+    val length = map.keys.foldLeft(0){ scala.math.max(_,_) } + 1
+    val vec = new JSparseVector( length )
+    for( i <- map.keys ) {
+      vec.set( i, map(i) )
+    }
+    vec
+  }
+
 
 }
