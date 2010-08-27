@@ -7,6 +7,7 @@ import Vector._
 trait Vector {
   def +[W <% Vector]( v: W ): Vector
   def *( alpha: Double ): Vector
+  def *[W <% JVector]( v: W ) = mtjVector dot v 
   def mtjVector(): JVector
   def apply( index: Int ) = mtjVector.get( index )
 }
