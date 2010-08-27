@@ -1,6 +1,7 @@
 package ch.unige.mts.vector
 
 import no.uib.cipr.matrix.{ Vector => JVector }
+import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
 
 import Vector._
 
@@ -99,6 +100,18 @@ object Vector {
   class Scalar( d: Double ) {
     def *(v: Vector ) = v*d
     def *(v: JVector ) = v*d
+  }
+
+   def apply( seq: Seq[Double] ):JDenseVector = {
+    val length = seq.size
+    println(seq)
+    println(length)
+    val vec = new JDenseVector( length )
+    println(vec.size)
+    for( i <- 0 until length ) {
+      vec.set( i, seq(i) )
+    }
+    vec
   }
 
 }

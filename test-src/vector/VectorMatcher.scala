@@ -17,10 +17,11 @@ trait VectorMatchers {
     override def apply( left:JVector ) = {
       if( values.size != left.size ) {
         MatchResult( false, 
-                    "The sizes are different", 
-                    "The sizes are equal",
-                    "the sizes are different",                              
-                    "The sizes are equal")
+                    "Size " + left.size + " is not equal to size " + values.size, 
+"Size " + left.size + " is equal to size " + values.size, 
+"size " + left.size + " is not equal to size " + values.size, 
+"size " + left.size + " is equal to size " + values.size)
+
       } else {
         var eqValues = true
         for( i <- 0 until values.size ) {

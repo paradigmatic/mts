@@ -128,6 +128,22 @@ class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
     dot3 should be (8.0)
   }
 
+  it can "be easily created from a seq" in {
+    val v = Vector( Seq( 1.0, 2.0, 4.0) )
+    v should be (similarTo(1.0, 2.0, 4.0) )
+  }
+
+  it can "be easily created from an array" in {
+    val v = Vector( Array( 1.0, 2.0, 4.0) )
+    v should be (similarTo(1.0, 2.0, 4.0) )
+  }
+
+  it can "be easily created from a List" in {
+    val v = Vector( List( 1.0, 2.0, 4.0) )
+    v should be (similarTo(1.0, 2.0, 4.0) )
+  }
+
+
 }
 
 
