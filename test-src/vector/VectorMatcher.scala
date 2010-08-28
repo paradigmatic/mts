@@ -13,7 +13,11 @@
 *
 * You should have received a copy of the GNU General Public License
 * along with MTS.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Copyright 2010 Jean-Luc Falcone (University of Geneva)
+*
 */
+
 
 package ch.unige.mts.test
 
