@@ -25,11 +25,10 @@ import org.scalatest.matchers.BeMatcher
 import org.scalatest.matchers.MatchResult
 
 import no.uib.cipr.matrix.{ Vector => JVector }
-import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
+import no.uib.cipr.matrix.{ Matrix => JMatrix }
+//import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
 
-trait VectorMatchers {
-
-  import ch.unige.mts.vector.Vector._
+trait Matchers {
   
   class JVecMatcher( values: Seq[Double] ) extends BeMatcher[JVector]{
     override def apply( left:JVector ) = {
@@ -52,6 +51,33 @@ trait VectorMatchers {
     }
   }
 
+ class JMatMatcher( values: Seq[Seq[Double]] ) extends BeMatcher[JMatrix]{
+    override def apply( left:JMatrix ) = {
+      if( values.size != left.numRows ) {
+        MatchResult( false, 
+                    "Number of rows " + left.numRows + 
+                    " is not equal to " + values.size, 
+                    "Number of rows " + left.numRows + 
+                    " is equal to " + values.size, 
+                   "number of rows " + left.numRows + 
+                    " is not equal to " + values.size, 
+                    "number of rows " + left.numRows + 
+                    " is equal to " + values.size )
+
+      } else {
+        var eqValues = true
+        for( i <- 0 until values.size; j <- 0 until values(i).size ) {
+          eqValues &= left.get(i,j) == values(i)(j)
+        }
+        MatchResult( eqValues,
+                    left.toString + " is not similar to " + values ,
+                    left.toString + " is similar to " + values )
+      }
+    }
+  }
+
   def similarTo( values:Double* ) = new JVecMatcher(values)
+  def similarTo( values: Seq[Double]* ) = new JMatMatcher(values)
+
 
 }

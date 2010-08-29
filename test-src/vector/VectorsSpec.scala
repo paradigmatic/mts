@@ -30,10 +30,10 @@ import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
 
 import ch.unige.mts.vector.Vector._
 import ch.unige.mts.MTS._
-import ch.unige.mts.test._
+import ch.unige.mts.test.Matchers
 
 
-class VectorsSpec extends FlatSpec with ShouldMatchers with VectorMatchers{
+class VectorsSpec extends FlatSpec with ShouldMatchers with Matchers{
 
   def mtjVector():JVector = 
     new JDenseVector( Array( 0.0, 1.0, 2.0, 3.0) )

@@ -21,13 +21,38 @@
 package ch.unige.mts.matrix
 
 import no.uib.cipr.matrix.{ Matrix => JMatrix }
+import no.uib.cipr.matrix.DenseMatrix
 
 import ch.unige.mts.MTS._
 
 trait Matrix {
 
-  def mtjMatrix: JMatrix
+  def mtjMatrix(): JMatrix
+  def t(): Matrix
 
 }
 
-class MatrixWrapper( val mtjMatrix: JMatrix )
+class MatrixWrapper( private val mtjMat: JMatrix, 
+                    private var toTranspose: Boolean ) 
+extends Matrix {
+
+  def this( mtjMat: JMatrix ) = this( mtjMat, false )
+
+  def mtjMatrix() = {
+    if( toTranspose ) {
+      mtjMat.transpose( transposedShape )
+    } else mtjMat
+  }
+
+  def t() = {
+    toTranspose = ! toTranspose
+    this
+  }
+
+  lazy val transposedShape = if( mtjMat.isSquare ) {
+    mtjMat.copy
+  } else {
+    new DenseMatrix( mtjMat.numColumns, mtjMat.numRows )
+  }
+
+}

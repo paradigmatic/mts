@@ -21,15 +21,19 @@
 package ch.unige.mts
 
 import ch.unige.mts.vector._
+import ch.unige.mts.matrix._
 import no.uib.cipr.matrix.{ Vector => JVector }
 import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
 import no.uib.cipr.matrix.sparse.{ SparseVector => JSparseVector }
+import no.uib.cipr.matrix.{ Matrix => JMatrix }
 
 object MTS {
 
   implicit def mtsv2mtjv( v: Vector ):JVector = v.mtjVector
   implicit def mtjv2mtsv( v: JVector ):VectorWrapper = new VectorWrapper( v )
 
+  implicit def mtsm2mtjm( m: Matrix ):JMatrix = m.mtjMatrix
+  implicit def mtjm2mtsm( m: JMatrix ):MatrixWrapper = new MatrixWrapper( m )
 
 
   implicit def double2scalar( d: Double): Scalar = new Scalar(d)

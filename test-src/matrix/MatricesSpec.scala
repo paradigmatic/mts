@@ -23,18 +23,24 @@ package ch.unige.mts.matrix
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
+import ch.unige.mts.test.Matchers
+
+import no.uib.cipr.matrix.{Matrix => JMatrix}
 import no.uib.cipr.matrix.{DenseMatrix => JDenseMatrix}
 
 
-class MatricesTest extends FlatSpec with ShouldMatchers {
+import ch.unige.mts.MTS._
+
+class MatricesSpec extends FlatSpec with ShouldMatchers with Matchers{
   
   def mtjMatrix( rows: Array[Double]* ) = new JDenseMatrix( rows.toArray )
    
-  "An mtj vector" can "be wrapped and unwrapped" in {
-    val jMat = mtjMatrix( Array(0.0, 1.0), Array(-1.0, 0.0) )
-    val mat = new MatrixWrapper( jMat )
-    val jMat2 = mat.mtjMatrix
-    jMat should be theSameInstanceAs(jMat2)
+  "An mtj matrix" can "be transposed" in {
+    val M = mtjMatrix( Array(1.0,2,3), Array(4.0,5,6) )
+    val N:JMatrix = M.t
+    M should be (similarTo( Array(1.0,2,3), Array(4.0,5,6) ) )
+    N should be (similarTo( Array(1.0,4), Array(2.0,5), Array(3.0,6) ) )
+
   }
 
 }
