@@ -29,6 +29,7 @@ import no.uib.cipr.matrix.{ Vector => JVector }
 import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
 
 import ch.unige.mts.vector.Vector._
+import ch.unige.mts.MTS._
 import ch.unige.mts.test._
 
 

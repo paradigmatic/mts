@@ -24,7 +24,7 @@ import no.uib.cipr.matrix.{ Vector => JVector }
 import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
 import no.uib.cipr.matrix.sparse.{ SparseVector => JSparseVector }
 
-import Vector._
+import ch.unige.mts.MTS._
 
 trait Vector {
   def +[W <% Vector]( v: W ): Vector
@@ -112,16 +112,6 @@ class ScaledVector( private var beta: Double, val v: Vector ) extends Vector {
 }
 
 object Vector {
-
-  implicit def mts2mtj( v: Vector ):JVector = v.mtjVector
-  implicit def mtj2mts( v: JVector ):VectorWrapper = new VectorWrapper( v )
-  implicit def double2scalar( d: Double): Scalar = new Scalar(d)
-  implicit def int2scalar( i: Int): Scalar = new Scalar(i)
-
-  class Scalar( d: Double ) {
-    def *(v: Vector ) = v*d
-    def *(v: JVector ) = v*d
-  }
 
    def apply( seq: Seq[Double] ):JDenseVector = {
     val length = seq.size
