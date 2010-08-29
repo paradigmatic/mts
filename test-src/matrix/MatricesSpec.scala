@@ -18,26 +18,23 @@
 *
 */
 
-package ch.unige.mts
+package ch.unige.mts.matrix
 
-import ch.unige.mts.vector._
-import no.uib.cipr.matrix.{ Vector => JVector }
-import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
-import no.uib.cipr.matrix.sparse.{ SparseVector => JSparseVector }
+import org.scalatest.FlatSpec
+import org.scalatest.matchers.ShouldMatchers
 
-object MTS {
-
-  implicit def mtsv2mtjv( v: Vector ):JVector = v.mtjVector
-  implicit def mtjv2mtsv( v: JVector ):VectorWrapper = new VectorWrapper( v )
+import no.uib.cipr.matrix.{DenseMatrix => JDenseMatrix}
 
 
-
-  implicit def double2scalar( d: Double): Scalar = new Scalar(d)
-  implicit def int2scalar( i: Int): Scalar = new Scalar(i)
-
-  class Scalar( d: Double ) {
-    def *(v: Vector ) = v*d
-    def *(v: JVector ) = v*d
+class MatricesTest extends FlatSpec with ShouldMatchers {
+  
+  def mtjMatrix( rows: Array[Double]* ) = new JDenseMatrix( rows.toArray )
+   
+  "An mtj vector" can "be wrapped and unwrapped" in {
+    val jMat = mtjMatrix( Array(0.0, 1.0), Array(-1.0, 0.0) )
+    val mat = new MatrixWrapper( jMat )
+    val jMat2 = mat.mtjMatrix
+    jMat should be theSameInstanceAs(jMat2)
   }
 
 }

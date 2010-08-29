@@ -18,26 +18,16 @@
 *
 */
 
-package ch.unige.mts
+package ch.unige.mts.matrix
 
-import ch.unige.mts.vector._
-import no.uib.cipr.matrix.{ Vector => JVector }
-import no.uib.cipr.matrix.{ DenseVector => JDenseVector }
-import no.uib.cipr.matrix.sparse.{ SparseVector => JSparseVector }
+import no.uib.cipr.matrix.{ Matrix => JMatrix }
 
-object MTS {
+import ch.unige.mts.MTS._
 
-  implicit def mtsv2mtjv( v: Vector ):JVector = v.mtjVector
-  implicit def mtjv2mtsv( v: JVector ):VectorWrapper = new VectorWrapper( v )
+trait Matrix {
 
-
-
-  implicit def double2scalar( d: Double): Scalar = new Scalar(d)
-  implicit def int2scalar( i: Int): Scalar = new Scalar(i)
-
-  class Scalar( d: Double ) {
-    def *(v: Vector ) = v*d
-    def *(v: JVector ) = v*d
-  }
+  def mtjMatrix: JMatrix
 
 }
+
+class MatrixWrapper( val mtjMatrix: JMatrix )
