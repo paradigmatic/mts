@@ -29,18 +29,27 @@ trait Matrix {
 
   def mtjMatrix(): JMatrix
   def t(): Matrix
+  def *(alpha: Double): Matrix
 
 }
 
 class MatrixWrapper( private val mtjMat: JMatrix, 
-                    private var toTranspose: Boolean ) 
+                    private var toTranspose: Boolean,
+                    private var toScale: Boolean,
+                    private var factor: Double )
 extends Matrix {
 
-  def this( mtjMat: JMatrix ) = this( mtjMat, false )
+  def this( mtjMat: JMatrix ) = this( mtjMat, false, false, 1 )
 
   def mtjMatrix() = {
     if( toTranspose ) {
-      mtjMat.transpose( transposedShape )
+      val newMat = mtjMat.transpose( transposedShape )
+      if( toScale ) {
+        newMat.scale(factor)
+      }
+      newMat
+    } else if( toScale ) {
+      mtjMat.copy.scale( factor)
     } else mtjMat
   }
 
@@ -49,6 +58,13 @@ extends Matrix {
     this
   }
 
+  def *( alpha: Double ) = {
+    toScale = true
+    factor *= alpha
+    this
+  }
+
+  //TODO: auto-choose best matrix kind
   lazy val transposedShape = if( mtjMat.isSquare ) {
     mtjMat.copy
   } else {
